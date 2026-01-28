@@ -1,0 +1,13 @@
+# dbt generated files
+target/
+logs/
+dbt_packages/
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+.env

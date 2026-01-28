@@ -1,0 +1,27 @@
+select
+    id as id_cust,
+    {{standardize_bz_gov_id('document')}} as nr_doc,
+    raiz_cnpj as nr_cnpj_root,
+    razao_social as nm_legal,
+    last_purchase as last_purchase_date,
+    corporate_id as id_corp,
+    created_at,
+    updated_at,
+    replication_key as cd_replication_key,
+    blocked_for_credit as is_blocked_credit,
+    blocked_for_credit_reason as desc_blocked_credit_reason,
+    trading_name as nm_trading,
+    credit_limit_from_erp as amt_credit_limit_erp,
+    external_id as id_external,
+    max_credit_period as qty_max_credit_per,
+    max_credit_limit as amt_max_credit_limit,
+    credit_available as amt_credit_available,
+    economic_group as cd_economic_group,
+    resale_bank_id as id_bank_resale,
+    credit_used as amt_credit_used,
+    anticipation_rule as cd_antcp_rule,
+    anticipation_kind as tp_antcp_kind,
+    anticipation_offset as qty_antcp_offset,
+    document_stripped as nr_doc_stripped
+from {{ source('bronze', 'raw_cashu_app__customers') }}
+qualify rank() over(partition by id order by _etl_loaded_at desc) = 1

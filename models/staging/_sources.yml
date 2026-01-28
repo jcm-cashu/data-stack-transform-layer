@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: bronze
+    tables:
+      - name: raw_kanastra__estoque
+      - name: raw_kanastra__aquisicoes
+      - name: raw_kanastra__liquidacoes
+      - name: raw_cashu_app__invoice_financing_items
+      - name: raw_cashu_app__order_installments
+      - name: raw_cashu_app__customers
+      - name: raw_cashu_app__businesses
+      - name: raw_cashu_app__corporates
+      - name: raw_manual_input__customers
+      - name: raw_cashu_app__orders
+      - name: raw_cashu_app__calendario_anbima
+      - name: raw_cashu_app__recommendations
+      - name: raw_cashu_app__integration_receivable
+      - name: raw_cashu_ops__cacau_show_stores
+      - name: raw_cashu_sales__metas
+      - name: raw_cashu_app__bank_billets
+      - name: raw_cashu_app__invoices
+      - name: raw_cashu_app__invoice_receivables
+      - name: raw_cashu_ops__estoque_conciliado
+      - name: raw_cashu_app__invoice_financings
