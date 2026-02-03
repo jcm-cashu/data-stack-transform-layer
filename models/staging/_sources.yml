@@ -24,3 +24,5 @@ sources:
       - name: raw_cashu_app__invoice_receivables
       - name: raw_cashu_ops__estoque_conciliado
       - name: raw_cashu_app__invoice_financings
+      - name: raw_cashu_app__cadastro_modelos_experimentos
+      - name: raw_cashu_app__movimentacao_modelos_experimentos

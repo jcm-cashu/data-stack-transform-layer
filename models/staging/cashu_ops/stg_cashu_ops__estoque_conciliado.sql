@@ -8,7 +8,7 @@ with source as (
         $1:"id"::bigint as id,
         -- Dates
         to_timestamp(($1:"issue_date"::int/1e9)::int)::date as issue_date,
-        to_timestamp(($1:"due_date"::int/1e9)::int)::date as due_date,
+        to_timestamp(($1:"due_date"::int/1e6)::int)::date as due_date,
         to_timestamp(($1:"pymt_date"::int/1e9)::int)::date as pymt_date,
         --$1:"due_date"::date as due_date,
         --$1:"pymt_date"::date as pymt_date,
