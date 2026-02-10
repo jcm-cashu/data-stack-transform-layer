@@ -15,12 +15,12 @@ with source as (
         $1:"operation_slug"::varchar as cd_slug_oper,
 
         -- Parties - Sponsor/Cedent
-        {{ standardize_bz_gov_id('$1:"sponsor_government_id"::varchar') }} as nr_gov_id_cedent,
-        $1:"sponsor_name"::varchar as nm_cedent,
+        {{ standardize_bz_gov_id('$1:"sponsor_government_id"::varchar') }} as nr_gov_id_debtor,
+        $1:"sponsor_name"::varchar as nm_debtor,
 
         -- Parties - Seller/Debtor
-        {{ standardize_bz_gov_id('$1:"seller_government_id"::varchar') }} as nr_gov_id_debtor,
-        $1:"seller_name"::varchar as nm_debtor,
+        {{ standardize_bz_gov_id('$1:"seller_government_id"::varchar') }} as nr_gov_id_cedent,
+        $1:"seller_name"::varchar as nm_cedent,
 
         -- Type
         $1:"asset_type"::varchar as tp_recv,

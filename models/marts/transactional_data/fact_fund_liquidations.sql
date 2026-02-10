@@ -2,7 +2,7 @@
   config(
     materialized='incremental',
     incremental_strategy='delete+insert',
-    unique_key=['pymt_date_cedent', 'id_fund'],
+    unique_key=['pymt_date_debtor', 'id_fund'],
     schema='fact_data'
   )
 }}

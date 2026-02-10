@@ -1,3 +1,4 @@
+with tb as (
 SELECT 
 	t7.CD_NAME_SLUG,
 	t7.ID_CORP,
@@ -23,3 +24,7 @@ left join {{ ref('stg_cashu_app__invoice_financings') }} t4 on t4.id_inv_fin = t
 left join {{ ref('stg_cashu_app__corporates') }} t7 on t7.id_corp = t4.ID_CORP
 LEFT JOIN {{ ref('stg_cashu_app__invoices') }} t6 ON t6.id_inv = t5.ID_INV
 left join {{ ref('stg_cashu_app__bank_billets') }} t8 on t8.id_billet = t2.ID_BILLET
+)
+select * from tb
+union all
+select * from {{ ref('int_cashu_app__cnab_operations_like_financing_items') }}

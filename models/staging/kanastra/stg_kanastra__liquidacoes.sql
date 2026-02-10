@@ -1,7 +1,7 @@
 with source as (
     select
         -- Dates
-        $1:"sponsor_payment_date"::date as pymt_date_cedent,
+        $1:"sponsor_payment_date"::date as pymt_date_debtor,
         $1:"payment_info_date"::date as pymt_info_date,
 
         -- Identifiers

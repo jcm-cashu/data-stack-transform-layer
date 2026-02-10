@@ -26,3 +26,5 @@ sources:
       - name: raw_cashu_app__invoice_financings
       - name: raw_cashu_app__cadastro_modelos_experimentos
       - name: raw_cashu_app__movimentacao_modelos_experimentos
+      - name: raw_cashu_app__cnabs
+      - name: raw_cashu_app__cnab_operations
