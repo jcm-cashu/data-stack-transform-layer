@@ -26,8 +26,9 @@ inner join {{ ref('stg_cashu_app__customers') }} c on r.id_cust = c.id_cust
 select
     distinct
     r.*,
-    du1.date recomendation_date_validity
+    dateadd(day, due_days_validity, r.ref_date) as recomendation_date_validity
 from tb r
-inner join {{ref('dim_anbima_calendar')}} du on r.ref_date = du.date
-inner join {{ref('dim_anbima_calendar')}} du1 on du.rank_next + r.due_days_validity = du1.rank_prev
-where du.is_business_day and du1.is_business_day and amt_credit_limit_new > 0
+--inner join {{ref('dim_calendar')}} du on r.ref_date = du.date
+--inner join {{ref('dim_calendar')}} du1 on du.rank_next + r.due_days_validity = du1.rank_prev
+--where du.is_business_day and du1.is_business_day and amt_credit_limit_new > 0
+where amt_credit_limit_new > 0

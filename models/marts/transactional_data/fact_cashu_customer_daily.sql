@@ -7,7 +7,7 @@
 
 WITH first_date AS (
 	SELECT 
-		least_ignore_nulls(min(x.ref_date),min(y.ttl_issue_at)) first_date,
+		least_ignore_nulls(min(x.ref_date),min(y.ttl_issue_at))::date first_date,
 		COALESCE(y.id_cust,x.id_cust) id_cust,
 		COALESCE(y.id_corp,x.id_corp) id_corp
 	FROM {{ ref('fact_daily_credit_recommendations') }} x
@@ -15,12 +15,12 @@ WITH first_date AS (
 GROUP BY ALL
 ), base AS (
 	SELECT 
-		date,
+		c.date::date date,
 		id_cust,
 		id_corp,
 		f.first_date,
-		c.rank_next rank_du
-	from {{ ref('dim_anbima_calendar') }} c
+		--c.rank_next rank_du
+	from {{ ref('dim_calendar') }} c
 	cross join first_date f
 	where c.date between f.first_date and CURRENT_TIMESTAMP()::date -- AND ID_CUST = '284169'
 ), tb AS (
@@ -54,11 +54,11 @@ GROUP BY ALL
 		iff(b.date = ttl_issue_date, TRUE, FALSE) is_sell_day,
 		iff(is_pymt_day, ttl_pymt_date - ttl_due_date_curr::date,null) qty_pymt_due_delta_days,
 		coalesce(ttl_pymt_date,current_timestamp()::date) pymt_date_aux,
-		iff(pymt_date_aux - ttl_due_date_curr::date > 2 AND tp_ttl_pymt='BOL CASHU',TRUE,False) is_pymt_delayed,
-		iff(pymt_date_aux - ttl_due_date_curr::date >= 30 AND tp_ttl_pymt='BOL CASHU',TRUE,False) is_over_30,
-		iff(pymt_date_aux - ttl_due_date_curr::date >= 60 AND tp_ttl_pymt='BOL CASHU',TRUE,False) is_over_60,
-		iff(pymt_date_aux - ttl_due_date_curr::date >= 90 AND tp_ttl_pymt='BOL CASHU',TRUE,False) is_over_90,
-		iff(pymt_date_aux - ttl_due_date_curr::date > 180 AND tp_ttl_pymt='BOL CASHU',TRUE,False) is_over_180,
+		iff(pymt_date_aux - ttl_due_date_curr::date > 2 AND tp_ttl_pymt='BOL',TRUE,False) is_pymt_delayed,
+		iff(pymt_date_aux - ttl_due_date_curr::date >= 30 AND tp_ttl_pymt='BOL',TRUE,False) is_over_30,
+		iff(pymt_date_aux - ttl_due_date_curr::date >= 60 AND tp_ttl_pymt='BOL',TRUE,False) is_over_60,
+		iff(pymt_date_aux - ttl_due_date_curr::date >= 90 AND tp_ttl_pymt='BOL',TRUE,False) is_over_90,
+		iff(pymt_date_aux - ttl_due_date_curr::date > 180 AND tp_ttl_pymt='BOL',TRUE,False) is_over_180,
 		b.date - lag(iff(is_sell_day,ttl_issue_date,null)) ignore nulls over(PARTITION BY b.id_cust ORDER BY b.date ASC, r.ID_RECV) qty_days_last_purchase,
 		iff(qty_days_last_purchase IS NULL AND ttl_issue_date IS NOT NULL, TRUE, False) is_first_purchase,
 		b.date - lag(iff(is_sell_day,ttl_issue_date,null)) ignore nulls over(PARTITION BY b.id_cust, tp_ttl_pymt ORDER BY b.date ASC, r.ID_RECV) qty_days_last_purchase_tp_pymt,
