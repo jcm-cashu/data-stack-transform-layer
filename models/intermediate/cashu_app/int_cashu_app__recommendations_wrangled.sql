@@ -11,7 +11,7 @@ select
         when tp_model_suggest = 'manual_recommendation' then 3
         when tp_model_suggest in ('behavioural_based_rule','acceptance_based_rule') then 3
         when tp_model_suggest = ('behavioural_model') then 5
-        when tp_model_suggest = 'acceptance_model' then 3
+        when tp_model_suggest = 'acceptance_model' then 30
     end as due_days_validity,
     case
         when tp_model_suggest = 'manual_recommendation' then 1
