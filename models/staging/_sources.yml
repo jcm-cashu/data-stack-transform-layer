@@ -28,3 +28,4 @@ sources:
       - name: raw_cashu_app__movimentacao_modelos_experimentos
       - name: raw_cashu_app__cnabs
       - name: raw_cashu_app__cnab_operations
+      - name: raw_cashu_app__core_data_scrs
