@@ -40,7 +40,8 @@ SELECT
 	0 AMT_PNLT,
 	ST_CNAB_OPER st_billet,
 	CD_NF_KEY CD_NFE_KEY,
-	NULL ST_INST
+	NULL ST_INST,
+	NULL nm_chgbk_ocurrence
 FROM {{ ref('stg_cashu_app__cnab_operations') }} t1
 INNER JOIN {{ ref('stg_cashu_app__corporates') }} t2 ON t1.ID_CORP = t2.ID_CORP 
 INNER JOIN {{ ref('stg_cashu_app__cnabs') }} T3 ON T1.ID_CNAB = T3.ID_CNAB 

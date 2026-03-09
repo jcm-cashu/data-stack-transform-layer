@@ -11,7 +11,7 @@ WITH old_base_tmp AS (
 		t1.cd_name_slug,
 		t1.CD_NFE_KEY,
 		t2.id_corp,
-		t2.ID_INV_FIN_ITEM,
+		t2.ID_INV_FIN_ITEM::varchar as id_inv_fin_item,
 		t2.ID_RECV,
 		t2.ID_INV_FIN,
 		t2.ID_ORD_INST,
@@ -36,9 +36,11 @@ WITH old_base_tmp AS (
 		t2.AMT_FEE_FIN,
 		t2.AMT_FEE_MDR,
 		t2.TP_RATE,
-		TRUE is_antcp
+		TRUE is_antcp,
+		t2.nm_chgbk_ocurrence,
+		t2.is_resale
 	FROM {{ ref('stg_cashu_ops__estoque_conciliado') }} t1
-	LEFT JOIN {{ ref('int_cashu_app__invoice_financing_items_wrangled') }} t2 ON t1.id_inv_fin_item = t2.ID_INV_FIN_ITEM
+	LEFT JOIN {{ ref('int_cashu_app__invoice_financing_items_wrangled') }} t2 ON t1.id_inv_fin_item::varchar = t2.ID_INV_FIN_ITEM::varchar
 ), old_base_freeze_paid AS (
 	SELECT
 		*
@@ -49,7 +51,7 @@ WITH old_base_tmp AS (
 		t1.cd_name_slug,
 		t1.CD_NFE_KEY,
 		t2.id_corp,
-		t2.ID_INV_FIN_ITEM,
+		t2.ID_INV_FIN_ITEM::varchar as id_inv_fin_item,
 		t2.ID_RECV,
 		t2.ID_INV_FIN,
 		t2.ID_ORD_INST,
@@ -74,9 +76,11 @@ WITH old_base_tmp AS (
 		t2.AMT_FEE_FIN,
 		t2.AMT_FEE_MDR,
 		t2.TP_RATE,
-		TRUE is_antcp
+		TRUE is_antcp,
+		t2.nm_chgbk_ocurrence,
+		t2.is_resale
 	FROM old_base_tmp t1
-	LEFT JOIN {{ ref('int_cashu_app__invoice_financing_items_wrangled') }} t2 ON t1.ID_INV_FIN_ITEM = t2.ID_INV_FIN_ITEM
+	LEFT JOIN {{ ref('int_cashu_app__invoice_financing_items_wrangled') }} t2 ON t1.ID_INV_FIN_ITEM::varchar = t2.ID_INV_FIN_ITEM::varchar
 	WHERE t1.pymt_date IS NULL
 ), old_base_freeze AS (
 	SELECT
@@ -91,7 +95,7 @@ WITH old_base_tmp AS (
 		t1.cd_name_slug,
 		t1.CD_NFE_KEY,
 		t2.id_corp,
-		t2.ID_INV_FIN_ITEM,
+		t2.ID_INV_FIN_ITEM::varchar as id_inv_fin_item,
 		t2.ID_RECV,
 		t2.ID_INV_FIN,
 		t2.ID_ORD_INST,
@@ -116,10 +120,12 @@ WITH old_base_tmp AS (
 		t2.AMT_FEE_FIN,
 		t2.AMT_FEE_MDR,
 		t2.TP_RATE,
-		TRUE is_antcp
+		TRUE is_antcp,
+		t2.nm_chgbk_ocurrence,
+		t2.is_resale
 	FROM {{ ref('int_kanastra__aquisicoes_with_invoice') }} t1
 	LEFT JOIN {{ ref('int_cashu_app__invoice_financing_items_wrangled') }} t2 ON t1.id_inv_fin_item = t2.ID_INV_FIN_ITEM
-	LEFT JOIN old_base_freeze t3 ON t3.ID_INV_FIN_ITEM = t1.ID_INV_FIN_ITEM
+	LEFT JOIN old_base_freeze t3 ON t3.ID_INV_FIN_ITEM::varchar = t1.ID_INV_FIN_ITEM::varchar
 	WHERE t3.id_inv_fin_item IS NULL AND t1.ref_date > '2026-01-09'
 )
 SELECT

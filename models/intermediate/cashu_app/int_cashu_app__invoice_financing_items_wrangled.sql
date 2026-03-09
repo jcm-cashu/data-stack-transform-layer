@@ -15,10 +15,12 @@ SELECT
 	t3.AMT_PNLT,
 	t3.ST_BILLET,
 	t6.CD_NFE_KEY,
-	t2.st_inst
+	t2.st_inst,
+	t9.nm_chgbk nm_chgbk_ocurrence
 FROM {{ ref('stg_cashu_app__invoice_financing_items') }} t1
 LEFT JOIN {{ ref('stg_cashu_app__invoice_receivables') }} t5 ON t5.ID_INV_RECV  = t1.ID_RECV 
 LEFT JOIN {{ ref('int_cashu_app__orders_wrangled') }} t2 ON t1.ID_ORD_INST = t2.ID_ORD_INST
+left join {{ ref('int_cashu_app__order_installment_charge_backs_wrangled') }} t9 on t9.id_ord_inst = t1.id_ord_inst
 LEFT JOIN {{ ref('stg_cashu_app__bank_billets') }} t3 ON t2.ID_BILLET  = t3.ID_BILLET 
 left join {{ ref('stg_cashu_app__invoice_financings') }} t4 on t4.id_inv_fin = t1.ID_INV_FIN 
 left join {{ ref('stg_cashu_app__corporates') }} t7 on t7.id_corp = t4.ID_CORP
@@ -26,6 +28,12 @@ LEFT JOIN {{ ref('stg_cashu_app__invoices') }} t6 ON t6.id_inv = t5.ID_INV
 left join {{ ref('stg_cashu_app__bank_billets') }} t8 on t8.id_billet = t2.ID_BILLET
 where t4.st_inv_fin = 2
 )
-select * from tb
+select 
+	t1.id_inv_fin_item::varchar as id_inv_fin_item,
+	* exclude(id_inv_fin_item),
+from tb t1
 union all
-select * from {{ ref('int_cashu_app__cnab_operations_like_financing_items') }}
+select 
+	'cnab_' || t2.id_inv_fin_item::varchar as id_inv_fin_item,
+	* exclude(id_inv_fin_item),
+from {{ ref('int_cashu_app__cnab_operations_like_financing_items') }} t2

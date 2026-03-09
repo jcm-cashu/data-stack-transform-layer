@@ -29,3 +29,4 @@ sources:
       - name: raw_cashu_app__cnabs
       - name: raw_cashu_app__cnab_operations
       - name: raw_cashu_app__core_data_scrs
+      - name: raw_cashu_app__order_installment_charge_backs
