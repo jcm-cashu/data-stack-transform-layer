@@ -21,4 +21,4 @@ select
 	tp_ttl_pymt,
 	iff(len(nr_gov_id_cust)=14,'pj','pf') tp_person_cust
 from {{ref('int_cashu_app__integration_receivables_valid')}}
-where tp_ttl_pymt = 'BOL CASHU' and st_ttl_oper  = 'ativo_antecipado'
+where tp_ttl_pymt = 'BOL' and st_ttl_oper  = 'ativo_antecipado'
