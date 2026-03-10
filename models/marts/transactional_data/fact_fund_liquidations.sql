@@ -8,7 +8,7 @@
 }}
 
 select *
-from {{ ref('int_kanastra__liquidacoes_with_invoice') }}
+from {{ ref('int_kanastra__liquidacoes_recompras_with_invoice') }}
 
 {% if is_incremental() %}
 where created_at >= (
