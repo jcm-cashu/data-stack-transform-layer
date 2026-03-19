@@ -2,12 +2,14 @@
   config(
     materialized='incremental',
     incremental_strategy='delete+insert',
-    unique_key=['pymt_date_debtor', 'id_fund'],
+    unique_key=['ref_date', 'id_fund'],
     schema='fact_data'
   )
 }}
 
-select *
+select 
+coalesce(pymt_date_debtor, pymt_info_date) as ref_date,
+*,
 from {{ ref('int_kanastra__liquidacoes_recompras_with_invoice') }}
 
 {% if is_incremental() %}
